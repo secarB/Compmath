@@ -30,7 +30,7 @@ EQUATIONS = [
 ]
 
 METHODS = [
-    ('Euler', improved_euler_method, 2),
+    ('Euler', improved_euler_method, 1),
     ('Milne', milne_method, 4)
 ]
 

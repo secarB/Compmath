@@ -1,7 +1,7 @@
 from numpy import true_divide
 
 
-def improved_euler_method(eq, h):
+def euler_method(eq, h):
     n = int((eq.b - eq.a) / h)
     x, y = [eq.a], [eq.y0]
     for i in range(n):
@@ -13,7 +13,7 @@ def improved_euler_method(eq, h):
 
 def milne_method(eq, h):
     n = int((eq.b - eq.a) / h)
-    x, y = improved_euler_method(eq, h)
+    x, y = euler_method(eq, h)
     f = eq.dif
     acc = 0.8
     for i in range(4, len(x)):

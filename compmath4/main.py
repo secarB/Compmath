@@ -8,7 +8,6 @@ def solve_task1():
 
 
 if __name__ == '__main__':
-    solve_task1()
     import approx
     from io_helper import (
         read_data_from_console,
