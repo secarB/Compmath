@@ -1,3 +1,4 @@
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -18,7 +19,6 @@ match read_method():
         if root == None:
             print(
                 "Invalide interval and equation for simple iteration calculation method")
-
     case _:
         print("Error with choosing method!")
 if root != None:
@@ -28,4 +28,15 @@ if root != None:
     plt.plot(root, equation(root), 'o')
     plt.title(f"Root in [{start},{stop}]")
     plt.show()
+x, x0, eps, y = read_system()
+res = system_simple_iteration_method(x, x0, eps)
+
+if res.solved:
+    print('result: ' + ' '.join(format_float(x) for x in res.roots))
+    print('error: ' + ' '.join(str(x) for x in res.errors))
+    print(f'Number of iterations {res.iteration}')
+else:
+    print('No solutions found')
+bx = abs(min(res.roots)) + 1
+show_graph(bx, 0, y, [])
 exit(0)
