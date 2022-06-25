@@ -8,6 +8,8 @@ class RectAlign:
 
 
 def rect_method(f, a, b, align=0, num=100):
+
+    num = num*2
     h = (b - a) / num
     arr = np.linspace(a, b, num, endpoint=False)
     match align:
