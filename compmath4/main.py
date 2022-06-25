@@ -1,55 +1,61 @@
-def solve_task1():
-    def Y(x): return 3 * x / (x ** 4 + 6)
-    X_FROM, X_TO = 0, 2
-    H = 0.2
+from tools import plot
+from linear import linear
+from quadratic import quadratic
+from power import power
+from exponent import exponent
+from logarimth import logarimth
+from cube import cube
+import numpy as np
 
-    import task1
-    task1.solve(Y, X_FROM, X_TO, H)
+FILE_IN = "../input"
+FILE_OUT = "output"
 
 
-if __name__ == '__main__':
-    import approx
-    from io_helper import (
-        read_data_from_console,
-        read_data_from_file,
-        output,
-        show_graph
-    )
+def get_input():
+    print("Enter \"x y\".")
+    data = []
+    while True:
+        try:
+            ip = input().strip()
+            if ip == '.':
+                if len(data) < 2:
+                    raise ValueError
+                break
+            dot = tuple(map(float, ip.split()))
+            if len(dot) != 2:
+                raise TypeError
+            data.append(dot)
+        except TypeError:
+            print("Please type by \"x y\"")
+        except ValueError:
+            print("Please add at least 2 points")
+    return data
 
-    approxes = [
-        ('Linear function', approx.approx_lin),
-        ('Quadratic function', approx.approx_quad),
-        ('Cubic function', approx.approx_cube),
-        ('Exponential Function', approx.approx_exp),
-        ('Logarithmic function', approx.approx_log),
-        ('Power function', approx.approx_pow),
-    ]
 
-    read_mode = input('File input (_): ').strip()
-    read = ((lambda: read_data_from_file(read_mode))
-            if read_mode
-            else read_data_from_console)
-    xs, ys = read()
+def main():
+    data = get_input()
+    tmp = [linear(data), quadratic(data),  cube(data),
+           exponent(data), logarimth(data), power(data)]
+    results = [result for result in tmp if result is not None]
 
-    results = [a[1](xs, ys) for a in approxes]
-    index_min = min(range(len(results)), key=results.__getitem__)
+    print("\n{:<50}{:<15}".format('Function', 'Deviation'))
+    for result in results:
+        print("{:<50}{:<15}".format(result['string'], result['min_s']))
 
-    write_mode = input('File output: ').strip()
-    file = open(write_mode, 'w') if write_mode else None
+    x = np.array([dot[0] for dot in data])
+    y = np.array([dot[1] for dot in data])
+    plot_x = np.linspace(np.min(x), np.max(x), 100)
+    plot_y = []
+    labels = []
+    for result in results:
+        plot_y.append([result['f'](x) for x in plot_x])
+        labels.append(result['string'])
+    plot(x, y, plot_x, plot_y, labels)
 
-    def out(x): return output(x, file)
+    final_result = min(results, key=lambda a: a['min_s'])
+    print("\nthe best result: ", final_result['string'])
 
-    for i, result in enumerate(results):
-        name = approxes[i][0]
-        out(f'--- {name}')
-        out(f'φ(x) = {result.function_str}')
-        out(f'S = {result.dispersion:.3f}')
-        out(f'δ = {result.deviation:.3f}')
-        out(f'R^2 = {result.confidence:.3f}')
-        if result.pearson:
-            out(f'r = {result.pearson:.3f}')
+    return 0
 
-    out(f'Best approximates {approxes[index_min][0]}: '
-        f'δ = {results[index_min].deviation:.3f}')
 
-    show_graph(xs, ys, results)
+main()

@@ -9,7 +9,7 @@ class Result:
     errors: list[float] = field(default_factory=list)
 
 
-LIMIT = 1_000
+LIMIT = 30
 
 
 def system_simple_iteration_method(xs, x0=None, eps=1e-3):
@@ -18,7 +18,6 @@ def system_simple_iteration_method(xs, x0=None, eps=1e-3):
         x0 = [1] * n
     x1 = x0[:]
     err = [0] * n
-
     for i in range(1, LIMIT + 1):
         converges = True
         for j in range(n):
@@ -28,6 +27,7 @@ def system_simple_iteration_method(xs, x0=None, eps=1e-3):
                 converges = False
 
         if converges:
+            print(x1[0])
             return Result(i, True, x1, err)
 
         x0 = x1[:]

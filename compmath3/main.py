@@ -32,8 +32,8 @@ def ask(functions):
     a, b = map(float, input(
         'Enter integration limits separated by a space: ').split())
     n = int(input('Enter number of splits: '))
-
-    return f, F, s, method, a, b, n
+    esp = float(input('Enter error: '))
+    return f, F, s, method, a, b, n, esp
 
 
 def main():
@@ -55,10 +55,9 @@ def main():
         }
     ]
 
-    f, F, s, method, a, b, n = ask(functions)
+    f, F, s, method, a, b, n, esp = ask(functions)
     fun = None
     err_f = 0
-
     match method:
         case 1 | 2 | 3:
             def fun(): return rect_method(f, a, b, method - 2, n)
@@ -66,8 +65,21 @@ def main():
         case 4:
             def fun(): return trapezoidal_method(f, a, b, n)
             def err_f(): return trapezoidal_method(f, a, b, n // 2)
-
     res = fun()
+    if method == 4:
+        s = trapezoidal_method(f, a, b, n*2)
+        while (abs(res - s) > esp):
+            res = s
+            n = n * 2
+            s = trapezoidal_method(f, a, b, n*2)
+        res2 = trapezoidal_method(f, a, b, n//2)
+    else:
+        s = rect_method(f, a, b, method-2, n*2)
+        while (abs(res - s) > esp):
+            res = s
+            n = n * 2
+            s = rect_method(f, a, b, method-2, n*2)
+        res2 = rect_method(f, a, b, method-2, n // 2)
     print('Calculation result:', res)
     print('Number of splits:', n)
 

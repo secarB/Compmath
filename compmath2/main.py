@@ -17,8 +17,9 @@ match read_method():
     case 2:
         root = find_root_simple_iteration(equation, start, stop, epsilon)
         if root == None:
+
             print(
-                "Invalide interval and equation for simple iteration calculation method")
+                "Invalide interval and equation for fixedpoint calculation method")
     case _:
         print("Error with choosing method!")
 if root != None:
@@ -32,6 +33,9 @@ x, x0, eps, y = read_system()
 res = system_simple_iteration_method(x, x0, eps)
 
 if res.solved:
+
+    print(f"f1(x,y)= {y[0](*res.roots)}")
+    print(f"f2(x,y)= {y[1](*res.roots)}")
     print('result: ' + ' '.join(format_float(x) for x in res.roots))
     print('error: ' + ' '.join(str(x) for x in res.errors))
     print(f'Number of iterations {res.iteration}')

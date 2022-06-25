@@ -57,12 +57,12 @@ def read_system():
     x = []
     y = []
     for i, group in enumerate(FUNCTIONS, 1):
-        print(f'choose function')
+        print(f'Choose system:')
         print(*(f'{j}. {fun[0]}' for j, fun in enumerate(group, 1)), sep='\n')
         n = int(input())
         x.append(group[n - 1][1])
         y.append(group[n - 1][2])
-    x0 = list(map(float, def_input('Initial guesses',
+    x0 = list(map(float, def_input('Initial x y 1 1 by deafault',
               ' '.join(['1' for _ in x])).split()))
     eps = float(def_input('esp', 1e-3))
 

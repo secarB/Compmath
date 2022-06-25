@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from prettytable import PrettyTable
 
-from methods import improved_euler_method, milne_method, runge_rule
+from methods import euler_method, milne_method, runge_rule
 from util import Equation, Fun, format_float as ff
 
 EQUATIONS = [
@@ -14,13 +14,6 @@ EQUATIONS = [
         y0=-1
     ),
     Equation(
-        dif=Fun('3 * x ** 2 * y + x ** 2 * exp(x ** 3)'),
-        ex=Fun('x ** 3 * exp(x ** 3) / 3'),
-        a=0,
-        b=1,
-        y0=0
-    ),
-    Equation(
         dif=Fun('cos(x) - y'),
         ex=Fun('(cos(x) + sin(x)) / 2'),
         a=0,
@@ -30,7 +23,7 @@ EQUATIONS = [
 ]
 
 METHODS = [
-    ('Euler', improved_euler_method, 1),
+    ('Euler', euler_method, 1),
     ('Milne', milne_method, 4)
 ]
 
@@ -51,8 +44,9 @@ def main():
     x, y = fun(eq, h)
     f_dif = [eq.dif(xi, yi) for xi, yi in zip(x, y)]
     f_ex = [eq.ex(xi) for xi in x]
-    eps = [abs(yi - ex) for yi, ex in zip(y, f_ex)]
+    eps = [abs(yi - ex) for yi, ex in zip(f_dif, f_ex)]
 
+    print(abs(f_dif[1]-f_ex[1]))
     table = PrettyTable(['i', 'x', 'y', 'f(x, y)', 'Real solution', 'eps'])
     table.add_rows([
         (i, ff(x[i]), ff(y[i]), ff(f_dif[i]), ff(f_ex[i]), ff(eps[i]))

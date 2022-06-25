@@ -9,10 +9,14 @@ def find_root_secant(f, start, stop, epsilon):
     x1 = x0 - f(x0) / derivative(f, x0, n=1)
     xi = x1
     xi_prev = x0
+    count = 0
     while(abs(xi - xi_prev) > epsilon):
+        count = count + 1
         tmp = xi
         xi = xi - f(xi) * (xi - xi_prev) / (f(xi) - f(xi_prev))
         xi_prev = tmp
+    print(f"n = {count}")
+    print(f(xi))
     return xi
 
 

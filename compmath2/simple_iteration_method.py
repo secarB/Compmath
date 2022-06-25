@@ -14,12 +14,15 @@ def find_root_simple_iteration(f, start, stop, epsilon):
     x1 = phi(x0)
     xi = x1
     xi_prev = x0
+    count = 0
     while float(abs(xi-xi_prev)) > epsilon:
+        count = count + 1
         tmp = xi
         xi = phi(xi)
         xi_prev = tmp
     print("__________________simple iteration end__________________")
-
+    print(f"n = {count}")
+    print(f(xi))
     return xi
 
 
